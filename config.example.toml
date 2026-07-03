@@ -1,0 +1,43 @@
+# Diktattool config
+# Copy to %USERPROFILE%\.diktattool\config.toml and edit if desired.
+# Any missing key falls back to its default.
+
+# Global hotkey (Python `keyboard` library syntax, e.g. "f12", "ctrl+alt+space")
+hotkey = "f12"
+
+# Whisper model: tiny | base | small | medium | large-v3
+model_size = "small"
+
+# Language code passed to Whisper. Deutsch by default.
+language = "de"
+
+# Hard cap on a single recording.
+max_recording_seconds = 120
+
+# Audio sample rate (Whisper expects 16 kHz).
+samplerate = 16000
+
+# CTranslate2 compute type.
+#   int8          — fastest on CPU; also works on every CUDA generation
+#   int8_float16  — CUDA only, needs Turing (RTX 20xx) or newer
+#   float16       — CUDA only, best quality on modern GPUs
+#   int8_float32  — safe fallback
+compute_type = "int8"
+
+# Device: "cuda" or "cpu".
+# Note: faster-whisper 1.x / CTranslate2 4.x requires a GPU with compute
+# capability 7.0+ (Volta / RTX 20xx or newer). Older cards like GTX 9xx
+# (Maxwell) must use "cpu".
+device = "cpu"
+
+# Logging: DEBUG | INFO | WARNING | ERROR
+log_level = "INFO"
+
+# Audio input device. Empty = system default (usually correct). If your
+# Windows default input isn't set or PortAudio can't find one, list what
+# it sees with:
+#   python -c "import sounddevice as sd; print(sd.query_devices())"
+# Then set either the integer index or a substring of the name:
+#   input_device = "1"
+#   input_device = "Microphone (Realtek"
+input_device = ""
