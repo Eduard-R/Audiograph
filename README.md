@@ -8,9 +8,12 @@ Details of the approved design: [`docs/superpowers/specs/2026-06-30-diktattool-d
 ## Requirements
 
 - Windows 10 / 11
-- Python 3.11+
-- NVIDIA GPU with CUDA (default config targets a GTX 970; adjust `compute_type` in
-  the config for other cards, or set `device = "cpu"`)
+- Python 3.11+ (from python.org, tick **Add to PATH** during install)
+- CPU works out of the box. Optional: NVIDIA GPU with **compute capability 7.0+**
+  (Volta / RTX 20xx or newer) for CUDA. Older cards (e.g. GTX 9xx / Maxwell)
+  must stay on `device = "cpu"` — CTranslate2 4.x dropped their support.
+- **Administrator rights** when launching — the `keyboard` library needs them
+  to install the global F12 hook.
 
 ## Install
 
@@ -52,7 +55,26 @@ first launch (for the log file).
 The first launch downloads the Whisper model (~488 MB for `small`) into
 `%USERPROFILE%\.cache\huggingface\hub\`. Subsequent starts skip that.
 
+### Installing on another machine
+
+1. Copy the project folder (or `git clone`). **Do not copy** `.venv\`,
+   `__pycache__\`, or your personal `%USERPROFILE%\.diktattool\config.toml` —
+   the venv contains absolute paths and won't work elsewhere.
+2. Run the Install steps above on the target machine.
+3. Adjust `%USERPROFILE%\.diktattool\config.toml` to the new hardware:
+   - Modern NVIDIA GPU → `device = "cuda"`, `compute_type = "float16"`
+     (or `"int8_float16"` for less VRAM).
+   - No NVIDIA / older GPU → `device = "cpu"`, `compute_type = "int8"`.
+4. Make sure Windows has a default recording device set, or list what
+   PortAudio sees and pin it via `input_device` (see `config.example.toml`).
+5. Some antivirus tools flag the `keyboard` library as a keylogger — add
+   an exception for the project folder if a scan quarantines it.
+
 ## Run
+
+Right-click `start.bat` → **Als Administrator ausführen** (or launch cmd
+as admin and run it there). Without admin the tray icon appears but F12
+does nothing.
 
 ```bat
 start.bat
